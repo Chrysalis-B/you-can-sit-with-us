@@ -1,0 +1,16 @@
+{
+  "name": "group-discount-manager",
+  "version": "1.0.0",
+  "description": "Generate and manage group discounts",
+  "scripts": {
+    "start": "concurrently \"cd backend && npm start\" \"cd frontend && npm start\" ",
+    "install": "concurrently \"cd backend && npm install\" \"cd frontend && npm install\" ",
+    "test": "concurrently \"cd backend && npm test\" \"cd frontend && npm test\" "
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "concurrently": "^4.1.1"
+  }
+}
