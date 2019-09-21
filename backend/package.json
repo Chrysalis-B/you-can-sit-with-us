@@ -16,6 +16,7 @@
     "@babel/preset-env": "^7.5.4",
     "@babel/preset-typescript": "^7.3.3",
     "@types/express": "^4.17.0",
+    "mongodb": "^3.3.2",
     "nodemon": "^1.19.1",
     "typescript": "^3.5.3"
   },
