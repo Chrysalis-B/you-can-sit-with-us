@@ -1,24 +1,18 @@
 import React from "react";
-import CreateCampaignForm from "./create-campaign-form";
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import Box from '@material-ui/core/Box';
+import Container from '@material-ui/core/Container';
+import CreateCampaignForm from "./components/CreateCampaignForm";
+import { BrowserRouter as Router, Route} from "react-router-dom";
 
 function App() {
   return (
-    <div>
+    <Box>
       <Router>
-        <div>
-          <nav>
-            <ul>
-              <li>
-                <Link to="/create">Create</Link>
-              </li>
-            </ul>
-          </nav>
-
-          <Route path="/create" exact component={CreateCampaignForm} />
-        </div>
+        <Container>
+          <Route path="/create" component={CreateCampaignForm} />
+        </Container>
       </Router>
-    </div>
+    </Box>
   );
 }
 
