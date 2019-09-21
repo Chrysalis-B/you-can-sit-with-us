@@ -1,18 +1,15 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Fragment } from "react";
 import axios from "../lib/axios";
-import Grid from '@material-ui/core/Grid';
+import Grid from "@material-ui/core/Grid";
+import UniversityPicker from "./UniversityPicker";
 import DatePicker from "./DatePicker";
-import InputLabel from "@material-ui/core/InputLabel";
-import MenuItem from "@material-ui/core/MenuItem";
-import FormHelperText from "@material-ui/core/FormHelperText";
-import FormControl from "@material-ui/core/FormControl";
-import Select from "@material-ui/core/Select";
+import DiscountSelector from "./DiscountSelector";
 
 function CreateCampaignForm() {
   useEffect(() => {
     const fetchUniversities = async () => {
       try {
-        const response = await axios.get(`/campaigns/create`);
+        const response = await axios.get("/campaigns/create");
         setOptions(response.data);
       } catch (err) {
         console.error(err);
@@ -26,55 +23,79 @@ function CreateCampaignForm() {
   const [values, setFormValues] = useState({
     university: "",
     startDate: new Date(),
-    endDate: new Date(Date.now() + 12096e5)
+    endDate: new Date(Date.now() + 12096e5),
+    discounts: [
+      {
+        discountId: 0,
+        minPeople: 10,
+        discount: 10
+      },
+      {
+        discountId: 1,
+        minPeople: 20,
+        discount: 20
+      },
+      {
+        discountId: 2,
+        minPeople: 30,
+        discount: 30
+      },
+      {
+        discountId: 3,
+        minPeople: 50,
+        discount: 50
+      }
+    ]
   });
 
-  console.log(values);
-
   function handleChange(event) {
-    setFormValues(oldValues => ({
-      ...oldValues,
-      [event.target.name]: event.target.value
-    }));
+    if (event.hasOwnProperty("discountId")) {
+      let newDiscounts = [...values.discounts];
+      newDiscounts[event.discountId] = {
+        ...newDiscounts[event.discountId],
+        [event.name]: event.value
+      };
+      setFormValues(oldValues => ({
+        ...oldValues,
+        discounts: [...newDiscounts]
+      }));
+    } else {
+      setFormValues(oldValues => ({
+        ...oldValues,
+        [event.name]: event.value
+      }));
+    }
   }
 
   return (
-    <div>
+    <Fragment>
       <h1>Create new Campaign</h1>
       <form autoComplete="off">
         <Grid container direction="column">
-        <FormControl>
-          <InputLabel htmlFor="university">University</InputLabel>
-          <Select
-            value={values.university}
+          <UniversityPicker
+            university={values.university}
+            options={options}
             onChange={handleChange}
-            inputProps={{
-              name: "university"
-            }}
-          >
-            {options.universities.map(university => (
-              <MenuItem key={university.id} value={university.name}>
-                {university.name}
-              </MenuItem>
-            ))}
-          </Select>
-          <FormHelperText>Select a university</FormHelperText>
-        </FormControl>
-        <DatePicker
-          onChange={handleChange}
-          selectedDate={values.startDate}
-          label="Start Date"
-          name="startDate"
-        />
-        <DatePicker
-          onChange={handleChange}
-          selectedDate={values.endDate}
-          label="End Date"
-          name="endDate"
-        />
+          />
+          <DatePicker
+            onChange={handleChange}
+            selectedDate={values.startDate}
+            label="Start Date"
+            name="startDate"
+          />
+          <DatePicker
+            onChange={handleChange}
+            selectedDate={values.endDate}
+            label="End Date"
+            name="endDate"
+          />
+          <DiscountSelector
+            onChange={handleChange}
+            discounts={values.discounts}
+          />
         </Grid>
       </form>
-    </div>
+    </Fragment>
   );
 }
 

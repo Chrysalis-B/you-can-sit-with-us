@@ -8,10 +8,8 @@ import {
 export default function DatePicker(props) {
   function onDateChange(date) {
     props.onChange({
-      target: {
         name: props.name,
         value: date
-      }
     });
   }
   return (
@@ -27,7 +25,7 @@ export default function DatePicker(props) {
         value={props.selectedDate}
         onChange={onDateChange}
         KeyboardButtonProps={{
-          "aria-label": "change date"
+          "aria-label": `change ${props.label}`
         }}
       />
     </MuiPickersUtilsProvider>
