@@ -55,7 +55,7 @@ app.use(express.static("public"));
 
 app.use(bodyParser.json());
 
-app.get("/", (req, res) => res.send("Hello World"));
+app.get("/", (req, res) => res.redirect("/campaigns"));
 
 app.get("/campaigns/create", (req, res) => {
   res.json(universities);
@@ -79,6 +79,25 @@ app.post("/campaigns/create", (req, res) => {
     });
 });
 
+app.get("/campaigns", (req, res) => {
+  const { db } = req.app.locals;
+  const collectionName = "campaigns";
+  mongoAdapter
+    .getAllCampaigns(db, collectionName)
+    .then(results => {
+      const data = results.map( result => {
+        const university = universities.find(
+          university => university.id === result.universityId
+        );
+        return { universityName: university ? university.name : "", ...result };
+      })
+      res.json(data);
+    })
+    .catch(err => {
+      console.error(err);
+    });
+});
+
 app.get("/campaigns/:id", (req, res) => {
   const id = req.params.id;
   const { db } = req.app.locals;
@@ -89,7 +108,7 @@ app.get("/campaigns/:id", (req, res) => {
       const university = universities.find(
         university => university.id === result.universityId
       );
-      const response = { universityName: university.name, ...result };
+      const response = { universityName: university ? university.name : "", ...result  };
       res.json(response);
     })
     .catch(err => {

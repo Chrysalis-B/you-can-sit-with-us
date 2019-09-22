@@ -1,18 +1,17 @@
 import React from "react";
-import Box from '@material-ui/core/Box';
-import Container from '@material-ui/core/Container';
+import Box from "@material-ui/core/Box";
 import CreateCampaignForm from "./components/CreateCampaignForm";
 import JoinCampaignForm from "./components/JoinCampaignForm";
-import { BrowserRouter as Router, Route} from "react-router-dom";
+import CampaignsTable from "./components/CampaignsTable";
+import { BrowserRouter as Router, Route } from "react-router-dom";
 
 function App() {
   return (
     <Box m={10}>
       <Router>
-        <Container maxWidth="sm">
-          <Route path="/create" component={CreateCampaignForm} />
-          <Route path="/campaign" component={JoinCampaignForm} />
-        </Container>
+      <Route path="/" exact component={CampaignsTable} />
+        <Route path="/campaign" component={JoinCampaignForm} />
+        <Route path="/create" component={CreateCampaignForm} />
       </Router>
     </Box>
   );

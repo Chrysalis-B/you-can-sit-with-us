@@ -1,6 +1,7 @@
 import React, { useState, useEffect, Fragment } from "react";
 import { Link } from "react-router-dom";
 import axios from "../lib/axios";
+import Container from "@material-ui/core/Container";
 import Grid from "@material-ui/core/Grid";
 import UniversityPicker from "./UniversityPicker";
 import DatePicker from "./DatePicker";
@@ -82,7 +83,7 @@ function CreateCampaignForm() {
   };
 
   return (
-    <Fragment>
+    <Container maxWidth="sm">
       <h1>Create new Campaign</h1>
       <form autoComplete="off" action="submit" method="post" onSubmit={handleSubmit}>
         <Grid container direction="column">
@@ -123,7 +124,7 @@ function CreateCampaignForm() {
           </Button>
         </Grid>
       </form>
-    </Fragment>
+    </Container>
   );
 }
 

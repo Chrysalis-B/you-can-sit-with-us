@@ -17,6 +17,16 @@ export const mongoAdapter = {
       })
       .catch(err => console.error(err));
   },
+  getAllCampaigns: (db, collectionName) => {
+    const collection = db.collection(collectionName);
+    return collection
+      .find()
+      .toArray()
+      .then(result => {
+        return result;
+      })
+      .catch(err => console.error(err));
+  },
   updateCampaign: (db, collectionName, values) => {
     const collection = db.collection(collectionName);
     return collection
@@ -24,7 +34,7 @@ export const mongoAdapter = {
         { campaignId: values.campaignId },
         {
           $inc: { studentsTotal: 1 },
-          $push: { students: values.studentId },
+          $push: { students: values.studentId }
         },
         { returnOriginal: false }
       )

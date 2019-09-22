@@ -1,5 +1,6 @@
-import React, { useState, useEffect, Fragment } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "../lib/axios";
+import Container from "@material-ui/core/Container";
 import Grid from "@material-ui/core/Grid";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
@@ -41,29 +42,29 @@ function JoinCampaignForm() {
   const handleSubmit = async event => {
     event.preventDefault();
     try {
-      const response = await axios.post(`/campaigns/${campaignInfo.campaignId}`, values);
+      const response = await axios.post(
+        `/campaigns/${campaignInfo.campaignId}`,
+        values
+      );
       setSuccess(response.data.success);
-    } 
-    catch(err) {
-        console.error(err);
+    } catch (err) {
+      console.error(err);
     }
   };
 
   return (
-    <Fragment>
+    <Container>
       <h1>
         Join the campaign for <span>{campaignInfo.universityName}</span>{" "}
       </h1>
-      <Grid container>
-        <div>
+      <Grid container spacing={2}>
+        <Grid item>
           <p>
             Fill out the form to join this campaign and get an exlusive
             discount!
           </p>
-          <p>
-            Be sure to share this link with your friends. The more people join,
-            the bigger the discount.
-          </p>
+          <p>Be sure to share this link with your friends.</p>
+          <p>The more people join, the bigger the discount.</p>
           <p>
             The campaign ends on{" "}
             <strong>{new Date(campaignInfo.endDate).toDateString()}</strong>.
@@ -83,40 +84,47 @@ function JoinCampaignForm() {
                 );
               })}
           </ul>
-        </div>
-        <form
-          autoComplete="off"
-          action="submit"
-          method="post"
-          onSubmit={handleSubmit}
-        >
-          <TextField
-            label="Name"
-            inputProps={{
-              name: "name"
-            }}
-            value={values.name}
-            onChange={handleChange}
-            margin="normal"
-            fullWidth
-          />
-          <TextField
-            label="Email"
-            inputProps={{
-              name: "email"
-            }}
-            value={values.email}
-            onChange={handleChange}
-            margin="normal"
-            fullWidth
-          />
-          {success && <p>Thank you for joining!</p>}
-          <Button fullWidth type="submit" variant="contained" color="secondary">
-            Submit
-          </Button>
-        </form>
+        </Grid>
+        <Grid item>
+          <form
+            autoComplete="off"
+            action="submit"
+            method="post"
+            onSubmit={handleSubmit}
+          >
+            <TextField
+              label="Name"
+              inputProps={{
+                name: "name"
+              }}
+              value={values.name}
+              onChange={handleChange}
+              margin="normal"
+              fullWidth
+            />
+            <TextField
+              label="Email"
+              inputProps={{
+                name: "email"
+              }}
+              value={values.email}
+              onChange={handleChange}
+              margin="normal"
+              fullWidth
+            />
+            {success && <p>Thank you for joining!</p>}
+            <Button
+              fullWidth
+              type="submit"
+              variant="contained"
+              color="secondary"
+            >
+              Submit
+            </Button>
+          </form>
+        </Grid>
       </Grid>
-    </Fragment>
+    </Container>
   );
 }
 
