@@ -6,6 +6,7 @@ import universities from "../data/universities.json";
 import { mongoAdapter } from "./utils/mongo-adapter";
 import { mailingApi } from "./utils/mailing-api-provider";
 import { urlProvider } from "./utils/url-provider";
+import { reminderEvaluator } from "./utils/reminder-evaluator";
 
 const port = 3001;
 const app = express();
@@ -20,6 +21,15 @@ const getCampaignSchema = values => {
     discounts: values.discounts,
     students: [],
     studentsTotal: 0
+  };
+};
+
+const getStudentSchema = values => {
+  return {
+    studentId: nanoid(8),
+    campaignId: values.campaignId,
+    name: values.name,
+    email: values.email
   };
 };
 
@@ -64,8 +74,8 @@ app.post("/campaigns/create", (req, res) => {
         campaignUrl: campaignUrl
       });
     })
-    .catch(() => {
-      console.error;
+    .catch(err => {
+      console.error(err);
     });
 });
 
@@ -76,14 +86,37 @@ app.get("/campaigns/:id", (req, res) => {
   mongoAdapter
     .getCampaign(db, collectionName, id)
     .then(result => {
-      console.log(result);
-      const university =  universities.find( university => university.id === result.universityId );
-      const response = { universityName : university.name, ...result };
+      const university = universities.find(
+        university => university.id === result.universityId
+      );
+      const response = { universityName: university.name, ...result };
       res.json(response);
     })
-    .catch(() => {
-      console.error;
+    .catch(err => {
+      console.error(err);
     });
+});
+
+app.post("/campaigns/:id", (req, res) => {
+  const id = req.params.id;
+  const { db } = req.app.locals;
+  const collectionName = "students";
+  const data = getStudentSchema({ ...req.body, campaignId: id });
+  mongoAdapter
+    .addStudent(db, collectionName, data)
+    .then(data => {
+      mailingApi.addStudentToEmailList(data);
+      mongoAdapter
+        .updateCampaign(db, "campaigns", data)
+        .then( (result) => {
+          reminderEvaluator.evaluate(result.value);
+          res.json({
+            success: true
+          })
+        })
+        .catch(err => console.error(err));
+    })
+    .catch(err => console.error(err));
 });
 
 app.listen(port, () => console.log("App is listening on port " + port));

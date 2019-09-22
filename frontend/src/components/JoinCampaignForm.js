@@ -26,6 +26,8 @@ function JoinCampaignForm() {
     email: ""
   });
 
+  const [success, setSuccess] = useState(false);
+
   const handleChange = event => {
     const values = {
       [event.target.name]: event.target.value
@@ -37,16 +39,22 @@ function JoinCampaignForm() {
   };
 
   const handleSubmit = async event => {
-      event.preventDefault();
-      console.log("Submitting form with ", values);
-  }
+    event.preventDefault();
+    try {
+      const response = await axios.post(`/campaigns/${campaignInfo.campaignId}`, values);
+      setSuccess(response.data.success);
+    } 
+    catch(err) {
+        console.error(err);
+    }
+  };
 
   return (
     <Fragment>
       <h1>
         Join the campaign for <span>{campaignInfo.universityName}</span>{" "}
       </h1>
-      <Grid container >
+      <Grid container>
         <div>
           <p>
             Fill out the form to join this campaign and get an exlusive
@@ -76,7 +84,12 @@ function JoinCampaignForm() {
               })}
           </ul>
         </div>
-        <form autoComplete="off" action="submit" method="post" onSubmit={handleSubmit}>
+        <form
+          autoComplete="off"
+          action="submit"
+          method="post"
+          onSubmit={handleSubmit}
+        >
           <TextField
             label="Name"
             inputProps={{
@@ -97,12 +110,8 @@ function JoinCampaignForm() {
             margin="normal"
             fullWidth
           />
-          <Button
-            fullWidth
-            type="submit"
-            variant="contained"
-            color="secondary"
-          >
+          {success && <p>Thank you for joining!</p>}
+          <Button fullWidth type="submit" variant="contained" color="secondary">
             Submit
           </Button>
         </form>
