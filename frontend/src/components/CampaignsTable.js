@@ -20,13 +20,13 @@ const useStyles = makeStyles(theme => ({
 }));
 
 function CampaignsTable() {
+  
   const classes = useStyles();
 
   useEffect(() => {
     const fetchCampaigns = async () => {
       try {
         const response = await axios.get("/campaigns");
-        console.log(response.data);
         setTableData(response.data);
       } catch (err) {
         console.error(err);
