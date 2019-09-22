@@ -8,7 +8,7 @@ function App() {
   return (
     <Box>
       <Router>
-        <Container>
+        <Container maxWidth="sm">
           <Route path="/create" component={CreateCampaignForm} />
         </Container>
       </Router>

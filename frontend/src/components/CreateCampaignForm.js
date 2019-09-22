@@ -4,8 +4,10 @@ import Grid from "@material-ui/core/Grid";
 import UniversityPicker from "./UniversityPicker";
 import DatePicker from "./DatePicker";
 import DiscountSelector from "./DiscountSelector";
+import Button from "@material-ui/core/Button";
 
 function CreateCampaignForm() {
+
   useEffect(() => {
     const fetchUniversities = async () => {
       try {
@@ -48,6 +50,7 @@ function CreateCampaignForm() {
     ]
   });
 
+
   function handleChange(event) {
     if (event.hasOwnProperty("discountId")) {
       let newDiscounts = [...values.discounts];
@@ -67,10 +70,15 @@ function CreateCampaignForm() {
     }
   }
 
+  function handleSubmit(event) {
+    event.preventDefault();
+    console.log("submitting");
+  }
+
   return (
     <Fragment>
       <h1>Create new Campaign</h1>
-      <form autoComplete="off">
+      <form autoComplete="off" onSubmit={handleSubmit}>
         <Grid container direction="column">
           <UniversityPicker
             university={values.university}
@@ -93,6 +101,9 @@ function CreateCampaignForm() {
             onChange={handleChange}
             discounts={values.discounts}
           />
+          <Button size="medium" type="submit" variant="contained" color="secondary">
+            Submit
+          </Button>
         </Grid>
       </form>
     </Fragment>

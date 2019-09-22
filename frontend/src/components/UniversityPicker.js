@@ -23,7 +23,7 @@ export default function UniversityPicer(props) {
         }}
       >
         {props.options.universities.map(university => (
-          <MenuItem key={university.id} value={university.name}>
+          <MenuItem key={university.id} value={university.id}>
             {university.name}
           </MenuItem>
         ))}
