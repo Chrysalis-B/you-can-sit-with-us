@@ -7,7 +7,6 @@ import DiscountSelector from "./DiscountSelector";
 import Button from "@material-ui/core/Button";
 
 function CreateCampaignForm() {
-
   useEffect(() => {
     const fetchUniversities = async () => {
       try {
@@ -50,7 +49,6 @@ function CreateCampaignForm() {
     ]
   });
 
-
   function handleChange(event) {
     if (event.hasOwnProperty("discountId")) {
       let newDiscounts = [...values.discounts];
@@ -70,10 +68,15 @@ function CreateCampaignForm() {
     }
   }
 
-  function handleSubmit(event) {
+  const handleSubmit = async event => {
     event.preventDefault();
-    console.log("submitting");
-  }
+    try {
+      const result = await axios.post("/campaigns/create", { values });
+      console.log(result);
+    } catch(err) {
+      console.error(err);
+    }
+  };
 
   return (
     <Fragment>
@@ -101,7 +104,12 @@ function CreateCampaignForm() {
             onChange={handleChange}
             discounts={values.discounts}
           />
-          <Button size="medium" type="submit" variant="contained" color="secondary">
+          <Button
+            size="medium"
+            type="submit"
+            variant="contained"
+            color="secondary"
+          >
             Submit
           </Button>
         </Grid>
