@@ -16,10 +16,10 @@ export default function UniversityPicer(props) {
     <FormControl>
       <InputLabel htmlFor="university">University</InputLabel>
       <Select
-        value={props.university}
+        value={props.universityId}
         onChange={handleChange}
         inputProps={{
-          name: "university"
+          name: "universityId"
         }}
       >
         {props.options.universities.map(university => (

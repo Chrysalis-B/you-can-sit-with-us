@@ -1,4 +1,5 @@
 import React, { useState, useEffect, Fragment } from "react";
+import { Link } from "react-router-dom";
 import axios from "../lib/axios";
 import Grid from "@material-ui/core/Grid";
 import UniversityPicker from "./UniversityPicker";
@@ -22,7 +23,7 @@ function CreateCampaignForm() {
   const [options, setOptions] = useState({ universities: [] });
 
   const [values, setFormValues] = useState({
-    university: "",
+    universityId: "",
     startDate: new Date(),
     endDate: new Date(Date.now() + 12096e5),
     discounts: [
@@ -49,6 +50,8 @@ function CreateCampaignForm() {
     ]
   });
 
+  const [campaignUrl, setCampaignUrl] = useState();
+
   function handleChange(event) {
     if (event.hasOwnProperty("discountId")) {
       let newDiscounts = [...values.discounts];
@@ -71,8 +74,8 @@ function CreateCampaignForm() {
   const handleSubmit = async event => {
     event.preventDefault();
     try {
-      const result = await axios.post("/campaigns/create", { values });
-      console.log(result);
+      const result = await axios.post("/campaigns/create", values);
+      setCampaignUrl(result.data.campaignUrl);
     } catch(err) {
       console.error(err);
     }
@@ -84,7 +87,7 @@ function CreateCampaignForm() {
       <form autoComplete="off" onSubmit={handleSubmit}>
         <Grid container direction="column">
           <UniversityPicker
-            university={values.university}
+            universityId={values.universityId}
             options={options}
             onChange={handleChange}
           />
@@ -104,6 +107,7 @@ function CreateCampaignForm() {
             onChange={handleChange}
             discounts={values.discounts}
           />
+          {campaignUrl && <p>Great! Here is the link to the newly created campaign: <Link to={campaignUrl}>{campaignUrl}</Link></p>}
           <Button
             size="medium"
             type="submit"

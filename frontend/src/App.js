@@ -6,7 +6,7 @@ import { BrowserRouter as Router, Route} from "react-router-dom";
 
 function App() {
   return (
-    <Box>
+    <Box m={10}>
       <Router>
         <Container maxWidth="sm">
           <Route path="/create" component={CreateCampaignForm} />
