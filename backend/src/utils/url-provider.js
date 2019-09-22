@@ -1,5 +1,5 @@
 export const urlProvider = {
     generateCampaignUrl: (id) => {
-        return `/campaigns/${id}`;
+        return `/campaign?campaignId=${id}`;
     }    
 } 

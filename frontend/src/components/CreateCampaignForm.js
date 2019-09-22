@@ -20,7 +20,8 @@ function CreateCampaignForm() {
     fetchUniversities();
   }, []);
 
-  const [options, setOptions] = useState({ universities: [] });
+  const [options, setOptions] = useState([]);
+  console.log(options);
 
   const [values, setFormValues] = useState({
     universityId: "",
@@ -76,7 +77,7 @@ function CreateCampaignForm() {
     try {
       const result = await axios.post("/campaigns/create", values);
       setCampaignUrl(result.data.campaignUrl);
-    } catch(err) {
+    } catch (err) {
       console.error(err);
     }
   };
@@ -84,7 +85,7 @@ function CreateCampaignForm() {
   return (
     <Fragment>
       <h1>Create new Campaign</h1>
-      <form autoComplete="off" onSubmit={handleSubmit}>
+      <form autoComplete="off" action="submit" method="post" onSubmit={handleSubmit}>
         <Grid container direction="column">
           <UniversityPicker
             universityId={values.universityId}
@@ -107,7 +108,12 @@ function CreateCampaignForm() {
             onChange={handleChange}
             discounts={values.discounts}
           />
-          {campaignUrl && <p>Great! Here is the link to the newly created campaign: <Link to={campaignUrl}>{campaignUrl}</Link></p>}
+          {campaignUrl && (
+            <p>
+              Great! Here is the link to the newly created campaign:{" "}
+              <Link to={campaignUrl}>{campaignUrl}</Link>
+            </p>
+          )}
           <Button
             size="medium"
             type="submit"

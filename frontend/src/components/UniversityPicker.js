@@ -5,7 +5,7 @@ import FormHelperText from "@material-ui/core/FormHelperText";
 import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
 
-export default function UniversityPicer(props) {
+export default function UniversityPicker(props) {
   const handleChange = event => {
     props.onChange({
       name: event.target.name,
@@ -13,20 +13,22 @@ export default function UniversityPicer(props) {
     });
   };
   return (
-    <FormControl>
-      <InputLabel htmlFor="university">University</InputLabel>
+    <FormControl required>
       <Select
+        native
         value={props.universityId}
         onChange={handleChange}
         inputProps={{
           name: "universityId"
         }}
       >
-        {props.options.universities.map(university => (
-          <MenuItem key={university.id} value={university.id}>
-            {university.name}
-          </MenuItem>
-        ))}
+        <option value="" />
+        {props.options &&
+          props.options.map(option => (
+            <option key={option.id} value={option.id}>
+              {option.name}
+            </option>
+          ))}
       </Select>
       <FormHelperText>Select a university</FormHelperText>
     </FormControl>

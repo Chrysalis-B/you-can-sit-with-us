@@ -48,7 +48,7 @@ app.use(bodyParser.json());
 app.get("/", (req, res) => res.send("Hello World"));
 
 app.get("/campaigns/create", (req, res) => {
-  res.json({ universities });
+  res.json(universities);
 });
 
 app.post("/campaigns/create", (req, res) => {
@@ -63,6 +63,23 @@ app.post("/campaigns/create", (req, res) => {
       return res.json({
         campaignUrl: campaignUrl
       });
+    })
+    .catch(() => {
+      console.error;
+    });
+});
+
+app.get("/campaigns/:id", (req, res) => {
+  const id = req.params.id;
+  const { db } = req.app.locals;
+  const collectionName = "campaigns";
+  mongoAdapter
+    .getCampaign(db, collectionName, id)
+    .then(result => {
+      console.log(result);
+      const university =  universities.find( university => university.id === result.universityId );
+      const response = { universityName : university.name, ...result };
+      res.json(response);
     })
     .catch(() => {
       console.error;
