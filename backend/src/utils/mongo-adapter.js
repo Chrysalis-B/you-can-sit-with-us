@@ -51,5 +51,17 @@ export const mongoAdapter = {
         return result.ops[0];
       })
       .catch(err => console.error(err));
+  },
+  findEndedCampaigs: (db, collectionName) => {
+    const collection = db.collection(collectionName);
+    const currentDate = Date.now();
+    return collection
+      .find({
+        endDate: { $lt: currentDate }
+      }).toArray()
+      .then(result => {
+        return result;
+      })
+      .catch(err => console.error(err));
   }
 };

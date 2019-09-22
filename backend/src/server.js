@@ -3,6 +3,7 @@ import { MongoClient } from "mongodb";
 import bodyParser from "body-parser";
 import nanoid from "nanoid";
 import universities from "../data/universities.json";
+import { scheduler } from "./utils/cron-scheduler";
 import { mongoAdapter } from "./utils/mongo-adapter";
 import { mailingApi } from "./utils/mailing-api-provider";
 import { urlProvider } from "./utils/url-provider";
@@ -39,6 +40,7 @@ MongoClient.connect(databaseUrl, {
 })
   .then(client => {
     app.locals.db = client.db("groupDiscountManager");
+    scheduler(client.db("groupDiscountManager"));
   })
   .catch(() => console.error("Failed to connect to the database"));
 
@@ -85,12 +87,12 @@ app.get("/campaigns", (req, res) => {
   mongoAdapter
     .getAllCampaigns(db, collectionName)
     .then(results => {
-      const data = results.map( result => {
+      const data = results.map(result => {
         const university = universities.find(
           university => university.id === result.universityId
         );
         return { universityName: university ? university.name : "", ...result };
-      })
+      });
       res.json(data);
     })
     .catch(err => {
@@ -108,7 +110,10 @@ app.get("/campaigns/:id", (req, res) => {
       const university = universities.find(
         university => university.id === result.universityId
       );
-      const response = { universityName: university ? university.name : "", ...result  };
+      const response = {
+        universityName: university ? university.name : "",
+        ...result
+      };
       res.json(response);
     })
     .catch(err => {
@@ -127,11 +132,11 @@ app.post("/campaigns/:id", (req, res) => {
       mailingApi.addStudentToEmailList(data);
       mongoAdapter
         .updateCampaign(db, "campaigns", data)
-        .then( (result) => {
+        .then(result => {
           reminderEvaluator.evaluate(result.value);
           res.json({
             success: true
-          })
+          });
         })
         .catch(err => console.error(err));
     })

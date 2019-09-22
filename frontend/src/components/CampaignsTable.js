@@ -37,6 +37,10 @@ function CampaignsTable() {
 
   const [tableData, setTableData] = useState([]);
 
+  const getUrl = (campaignId) => {
+      return `/campaign?campaignId=${campaignId}`;
+  }
+
   return (
     <Fragment>
       {tableData.length === 0 && (
@@ -61,6 +65,7 @@ function CampaignsTable() {
               <TableCell>Students Participating</TableCell>
               <TableCell>Start Date</TableCell>
               <TableCell>End Date</TableCell>
+              <TableCell>Campaign Url</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -70,6 +75,7 @@ function CampaignsTable() {
                 <TableCell>{row.studentsTotal}</TableCell>
                 <TableCell>{new Date(row.startDate).toDateString()}</TableCell>
                 <TableCell>{new Date(row.endDate).toDateString()}</TableCell>
+                <TableCell> <Link to={getUrl(row.campaignId)}>Campaign Page</Link></TableCell>
               </TableRow>
             ))}
           </TableBody>

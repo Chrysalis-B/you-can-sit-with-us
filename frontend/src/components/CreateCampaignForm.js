@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Fragment } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import axios from "../lib/axios";
 import Container from "@material-ui/core/Container";
@@ -13,6 +13,7 @@ function CreateCampaignForm() {
     const fetchUniversities = async () => {
       try {
         const response = await axios.get("/campaigns/create");
+        console.log("response", response);
         setOptions(response.data);
       } catch (err) {
         console.error(err);
