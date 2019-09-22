@@ -1,6 +1,11 @@
 ## Setup
 
-First start a local Mongo Connection on port `27017`. Project was created using Mongodb version v4.0.6
+Prerequisites: 
+
+`Mongodb` (project built using v4.0.6)
+`Node` (project built using  v11.12.0)
+
+First start a local Mongo Connection on port `27017`.
 
 To start the frontend & backend of the application run:
 

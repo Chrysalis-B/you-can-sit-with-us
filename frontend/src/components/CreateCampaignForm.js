@@ -21,7 +21,6 @@ function CreateCampaignForm() {
   }, []);
 
   const [options, setOptions] = useState([]);
-  console.log(options);
 
   const [values, setFormValues] = useState({
     universityId: "",
@@ -51,7 +50,7 @@ function CreateCampaignForm() {
     ]
   });
 
-  const [campaignUrl, setCampaignUrl] = useState();
+  const [campaignUrl, setCampaignUrl] = useState("");
 
   function handleChange(event) {
     if (event.hasOwnProperty("discountId")) {
