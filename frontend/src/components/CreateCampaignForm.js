@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import axios from "../lib/axios";
+import axios from "../utils/axios";
 import Container from "@material-ui/core/Container";
 import Grid from "@material-ui/core/Grid";
 import UniversityPicker from "./UniversityPicker";
